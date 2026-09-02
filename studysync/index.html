@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#050c08" />
+  <meta name="description" content="StudySync — Student Task Manager. Organize assignments, timetable, notes and deadlines." />
+  <title>StudySync — Student Task Manager</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+</head>
+<body>
+  <div id="auth-container" class="auth-container">
+    <div id="login-view" class="auth-card">
+      <div class="glow-orb"></div>
+      <h1>Welcome to StudySync</h1>
+      <p class="subtitle">Sign in to manage lectures, assignments & deadlines in one place.</p>
+      <form id="login-form">
+        <label>Email address*</label>
+        <input type="email" id="login-email" placeholder="example@gmail.com" required autocomplete="email" />
+        <label>Password*</label>
+        <div class="password-wrap">
+          <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password" />
+          <button type="button" class="toggle-pass" data-target="login-password">👁</button>
+        </div>
+        <div class="row-between">
+          <label class="checkbox"><input type="checkbox" id="remember-me" /> Remember me</label>
+          <a href="#" id="show-forgot">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn-primary">Sign in</button>
+      </form>
+      <p class="switch-auth">Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+    </div>
+
+    <div id="signup-view" class="auth-card hidden">
+      <div class="glow-orb"></div>
+      <h1>Create Your Account</h1>
+      <p class="subtitle">Join StudySync to organise your academic life.</p>
+      <form id="signup-form">
+        <label>Full Name*</label>
+        <input type="text" id="signup-name" placeholder="Alex Smith" required autocomplete="name" />
+        <label>Email address*</label>
+        <input type="email" id="signup-email" placeholder="example@gmail.com" required autocomplete="email" />
+        <label>Password*</label>
+        <div class="password-wrap">
+          <input type="password" id="signup-password" placeholder="Min 6 characters" required minlength="6" autocomplete="new-password" />
+          <button type="button" class="toggle-pass" data-target="signup-password">👁</button>
+        </div>
+        <button type="submit" class="btn-primary">Register</button>
+      </form>
+      <p class="switch-auth">Already have an account? <a href="#" id="show-login">Sign in</a></p>
+    </div>
+
+    <div id="forgot-view" class="auth-card hidden">
+      <div class="glow-orb"></div>
+      <h1>Forgot Password?</h1>
+      <p class="subtitle">Enter your email and we'll help you recover access.</p>
+      <form id="forgot-form">
+        <label>Email address*</label>
+        <input type="email" id="forgot-email" placeholder="example@gmail.com" required />
+        <button type="submit" class="btn-primary">Send Code</button>
+      </form>
+      <p class="switch-auth">Already have an account? <a href="#" id="back-to-login">Sign in</a></p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-orb"></div>
+        <span>Study<span class="accent">Sync</span></span>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-view="dashboard"><span class="icon">📊</span> Dashboard</button>
+        <button class="nav-btn" data-view="tasks"><span class="icon">✅</span> Tasks & Projects</button>
+        <button class="nav-btn" data-view="calendar"><span class="icon">📅</span> Calendar</button>
+        <button class="nav-btn" data-view="timetable"><span class="icon">🗓️</span> Timetable</button>
+        <button class="nav-btn" data-view="notes"><span class="icon">📝</span> Notes</button>
+        <button class="nav-btn" data-view="timer"><span class="icon">⏱️</span> Study Timer</button>
+        <button class="nav-btn" data-view="progress"><span class="icon">📈</span> Progress</button>
+        <button class="nav-btn" data-view="notifications"><span class="icon">🔔</span> Notifications</button>
+        <button class="nav-btn" data-view="profile"><span class="icon">👤</span> Profile</button>
+      </nav>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <h2 id="page-title">Dashboard</h2>
+        <div class="topbar-right">
+          <button id="add-task-btn" class="btn-primary small">+ Add Task</button>
+          <div class="user-chip" id="user-chip">Student</div>
+        </div>
+      </header>
+      <div class="content">
+        <section id="view-dashboard" class="view active">
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-label">Pending Tasks</div><div class="stat-value" id="stat-pending">0</div></div>
+            <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="stat-completed">0</div></div>
+            <div class="stat-card"><div class="stat-label">Due Today</div><div class="stat-value" id="stat-today">0</div></div>
+            <div class="stat-card"><div class="stat-label">Overdue</div><div class="stat-value danger" id="stat-overdue">0</div></div>
+          </div>
+          <div class="two-col">
+            <div class="panel"><h3>Upcoming Deadlines</h3><div id="upcoming-list" class="task-list"></div></div>
+            <div class="panel"><h3>Quick Actions</h3>
+              <div class="quick-actions">
+                <button class="qa-btn" data-view="tasks">View All Tasks</button>
+                <button class="qa-btn" data-view="calendar">Open Calendar</button>
+                <button class="qa-btn" data-view="timer">Start Study Session</button>
+                <button class="qa-btn" data-view="notes">Write a Note</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-tasks" class="view">
+          <div class="filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="completed">Completed</button>
+            <button class="filter-btn" data-filter="overdue">Overdue</button>
+          </div>
+          <div id="tasks-list" class="task-list full"></div>
+        </section>
+
+        <section id="view-calendar" class="view">
+          <div class="calendar-header">
+            <button id="prev-month">‹</button>
+            <h3 id="cal-month-year"></h3>
+            <button id="next-month">›</button>
+          </div>
+          <div class="calendar-grid" id="calendar-grid"></div>
+          <div class="panel mt"><h3>Tasks on selected day</h3><div id="day-tasks" class="task-list"></div></div>
+        </section>
+
+        <section id="view-timetable" class="view">
+          <div class="panel">
+            <div class="row-between mb"><h3>Class Timetable</h3><button id="add-class-btn" class="btn-primary small">+ Add Class</button></div>
+            <div id="timetable-list" class="timetable"></div>
+          </div>
+        </section>
+
+        <section id="view-notes" class="view">
+          <div class="panel">
+            <div class="row-between mb"><h3>Notes</h3><button id="add-note-btn" class="btn-primary small">+ New Note</button></div>
+            <div id="notes-list" class="notes-grid"></div>
+          </div>
+        </section>
+
+        <section id="view-timer" class="view">
+          <div class="timer-card">
+            <div class="glow-orb large"></div>
+            <div class="timer-display" id="timer-display">25:00</div>
+            <div class="timer-modes">
+              <button class="mode-btn active" data-min="25">Pomodoro</button>
+              <button class="mode-btn" data-min="15">Short Break</button>
+              <button class="mode-btn" data-min="45">Long Focus</button>
+            </div>
+            <div class="timer-controls">
+              <button id="timer-start" class="btn-primary">Start</button>
+              <button id="timer-pause" class="btn-secondary" disabled>Pause</button>
+              <button id="timer-reset" class="btn-secondary">Reset</button>
+            </div>
+            <p class="timer-hint">Stay consistent with focused study sessions.</p>
+          </div>
+        </section>
+
+        <section id="view-progress" class="view">
+          <div class="panel">
+            <h3>Academic Progress</h3>
+            <div class="progress-stats">
+              <div class="progress-item"><span>Task Completion Rate</span><div class="progress-bar"><div id="completion-bar" class="fill"></div></div><span id="completion-pct">0%</span></div>
+              <div class="progress-item"><span>Tasks completed this week</span><strong id="week-completed">0</strong></div>
+              <div class="progress-item"><span>Total tasks created</span><strong id="total-tasks">0</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="view-notifications" class="view">
+          <div class="panel"><h3>Notifications & Reminders</h3><div id="notif-list" class="notif-list"></div></div>
+        </section>
+
+        <section id="view-profile" class="view">
+          <div class="panel">
+            <h3>Your Profile</h3>
+            <div class="profile-form">
+              <label>Full Name</label><input type="text" id="profile-name" />
+              <label>Email</label><input type="email" id="profile-email" disabled />
+              <label>University / School</label><input type="text" id="profile-school" placeholder="e.g. University of Lagos" />
+              <label>Level / Year</label><input type="text" id="profile-level" placeholder="e.g. 300 Level" />
+              <button id="save-profile" class="btn-primary">Save Changes</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <nav class="mobile-nav" id="mobile-nav">
+      <button class="mobile-nav-btn active" data-view="dashboard"><span class="icon">📊</span>Home</button>
+      <button class="mobile-nav-btn" data-view="tasks"><span class="icon">✅</span>Tasks</button>
+      <button class="mobile-nav-btn" data-view="calendar"><span class="icon">📅</span>Cal</button>
+      <button class="mobile-nav-btn" data-view="timer"><span class="icon">⏱️</span>Timer</button>
+      <button class="mobile-nav-btn" data-view="profile"><span class="icon">👤</span>Profile</button>
+    </nav>
+  </div>
+
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <button class="modal-close" id="modal-close">×</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

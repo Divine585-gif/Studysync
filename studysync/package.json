@@ -1,0 +1,14 @@
+{
+  "name": "studysync",
+  "version": "1.0.0",
+  "description": "StudySync — Student Task Manager",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "private": true
+}

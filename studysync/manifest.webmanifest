@@ -1,0 +1,12 @@
+{
+  "name": "StudySync — Student Task Manager",
+  "short_name": "StudySync",
+  "description": "Organize assignments, timetable, notes and deadlines.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050c08",
+  "theme_color": "#050c08",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" }
+  ]
+}
