@@ -194,10 +194,6 @@ document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.addEventListener
 document.getElementById('menu-btn')?.addEventListener('click', openDrawer);
 document.getElementById('drawer-close')?.addEventListener('click', closeDrawer);
 document.getElementById('drawer-overlay')?.addEventListener('click', closeDrawer);
-document.getElementById('mobile-more-btn')?.addEventListener('click', e => {
-  e.preventDefault();
-  openDrawer();
-});
 document.getElementById('logout-btn-mobile')?.addEventListener('click', () => {
   closeDrawer();
   if (confirm('Log out of StudySync?')) forceLogout(null);
