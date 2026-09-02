@@ -87,7 +87,10 @@
 
     <main class="main">
       <header class="topbar">
-        <h2 id="page-title">Dashboard</h2>
+        <div class="topbar-left">
+          <button type="button" id="menu-btn" class="menu-btn" aria-label="Open menu">☰</button>
+          <h2 id="page-title">Dashboard</h2>
+        </div>
         <div class="topbar-right">
           <button id="add-task-btn" class="btn-primary small">+ Add Task</button>
           <div class="user-chip" id="user-chip">Student</div>
@@ -196,11 +199,35 @@
       </div>
     </main>
 
+    <!-- Mobile full menu drawer -->
+    <div id="drawer-overlay" class="drawer-overlay hidden"></div>
+    <aside id="mobile-drawer" class="mobile-drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <div class="logo">
+          <div class="logo-orb"></div>
+          <span>Study<span class="accent">Sync</span></span>
+        </div>
+        <button type="button" id="drawer-close" class="drawer-close" aria-label="Close menu">×</button>
+      </div>
+      <nav class="drawer-nav">
+        <button class="nav-btn active" data-view="dashboard"><span class="icon">📊</span> Dashboard</button>
+        <button class="nav-btn" data-view="tasks"><span class="icon">✅</span> Tasks & Projects</button>
+        <button class="nav-btn" data-view="calendar"><span class="icon">📅</span> Calendar</button>
+        <button class="nav-btn" data-view="timetable"><span class="icon">🗓️</span> Timetable</button>
+        <button class="nav-btn" data-view="notes"><span class="icon">📝</span> Notes</button>
+        <button class="nav-btn" data-view="timer"><span class="icon">⏱️</span> Study Timer</button>
+        <button class="nav-btn" data-view="progress"><span class="icon">📈</span> Progress</button>
+        <button class="nav-btn" data-view="notifications"><span class="icon">🔔</span> Notifications</button>
+        <button class="nav-btn" data-view="profile"><span class="icon">👤</span> Profile</button>
+      </nav>
+      <button type="button" id="logout-btn-mobile" class="logout-btn drawer-logout">Logout</button>
+    </aside>
+
     <nav class="mobile-nav" id="mobile-nav">
       <button class="mobile-nav-btn active" data-view="dashboard"><span class="icon">📊</span>Home</button>
       <button class="mobile-nav-btn" data-view="tasks"><span class="icon">✅</span>Tasks</button>
       <button class="mobile-nav-btn" data-view="calendar"><span class="icon">📅</span>Cal</button>
-      <button class="mobile-nav-btn" data-view="timer"><span class="icon">⏱️</span>Timer</button>
+      <button class="mobile-nav-btn" data-view="more" id="mobile-more-btn"><span class="icon">☰</span>More</button>
       <button class="mobile-nav-btn" data-view="profile"><span class="icon">👤</span>Profile</button>
     </nav>
   </div>

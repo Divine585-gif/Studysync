@@ -155,14 +155,57 @@ function showView(name) {
   const viewEl = document.getElementById('view-' + name);
   if (viewEl) viewEl.classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
-  document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+  document.querySelectorAll('.mobile-nav-btn').forEach(b => {
+    if (b.dataset.view === 'more') return;
+    b.classList.toggle('active', b.dataset.view === name);
+  });
   const titles = { dashboard: 'Dashboard', tasks: 'Tasks & Projects', calendar: 'Calendar', timetable: 'Class Timetable', notes: 'Notes', timer: 'Study Timer', progress: 'Progress', notifications: 'Notifications', profile: 'Profile' };
   document.getElementById('page-title').textContent = titles[name] || name;
+  closeDrawer();
+}
+
+function openDrawer() {
+  const drawer = document.getElementById('mobile-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  if (!drawer) return;
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  if (overlay) overlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  const drawer = document.getElementById('mobile-drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  if (!drawer) return;
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  if (overlay) overlay.classList.add('hidden');
+  document.body.style.overflow = '';
 }
 
 document.querySelectorAll('.nav-btn').forEach(btn => btn.addEventListener('click', () => showView(btn.dataset.view)));
 document.querySelectorAll('.qa-btn').forEach(btn => btn.addEventListener('click', () => showView(btn.dataset.view)));
-document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.addEventListener('click', () => showView(btn.dataset.view)));
+document.querySelectorAll('.mobile-nav-btn').forEach(btn => btn.addEventListener('click', () => {
+  if (btn.dataset.view === 'more') return;
+  showView(btn.dataset.view);
+}));
+
+document.getElementById('menu-btn')?.addEventListener('click', openDrawer);
+document.getElementById('drawer-close')?.addEventListener('click', closeDrawer);
+document.getElementById('drawer-overlay')?.addEventListener('click', closeDrawer);
+document.getElementById('mobile-more-btn')?.addEventListener('click', e => {
+  e.preventDefault();
+  openDrawer();
+});
+document.getElementById('logout-btn-mobile')?.addEventListener('click', () => {
+  closeDrawer();
+  if (confirm('Log out of StudySync?')) forceLogout(null);
+});
+document.querySelectorAll('#mobile-drawer .nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => showView(btn.dataset.view));
+});
+
 
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 function isOverdue(task) {

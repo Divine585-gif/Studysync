@@ -822,6 +822,86 @@ a:hover { text-decoration: underline; }
 .mobile-nav-btn .icon { font-size: 1.2rem; }
 .mobile-nav-btn.active { color: var(--accent); }
 
+
+/* ===== Topbar left + menu button ===== */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.menu-btn {
+  display: none;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+.menu-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ===== Mobile drawer ===== */
+.drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 80;
+}
+.drawer-overlay.hidden { display: none !important; }
+
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(300px, 86vw);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  z-index: 90;
+  flex-direction: column;
+  padding: 16px 12px;
+  transform: translateX(-105%);
+  transition: transform 0.25s ease;
+  overflow-y: auto;
+}
+.mobile-drawer.open {
+  transform: translateX(0);
+}
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+.drawer-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.6rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+}
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.drawer-logout {
+  margin-top: 16px;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -830,7 +910,10 @@ a:hover { text-decoration: underline; }
 
 @media (max-width: 768px) {
   .sidebar { display: none; }
+  .menu-btn { display: inline-flex; }
   .mobile-nav { display: flex; }
+  .drawer-overlay:not(.hidden) { display: block; }
+  .mobile-drawer { display: flex; }
   .content {
     padding: 16px;
     padding-bottom: calc(72px + var(--safe-bottom));
